@@ -1,7 +1,7 @@
 import React from "react";
 import ImageGalleryItem from "./ImageGalleryItem";
 
-export default function ImageGallery({ arrayImages, onClickModal }) {
+export default function ImageGallery({ arrayImages, imageClick }) {
   return (
     <>
       <ul className="ImageGallery">
@@ -9,7 +9,7 @@ export default function ImageGallery({ arrayImages, onClickModal }) {
           <ImageGalleryItem
             key={image.id}
             image={image}
-            onClickModal={onClickModal}
+            onClickModal={imageClick}
           />
         ))}
       </ul>

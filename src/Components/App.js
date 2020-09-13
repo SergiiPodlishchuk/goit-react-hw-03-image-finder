@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-import imagesAPI from "./services/imagesAPI";
 import Searchbar from "./Searchbar/Searchbar";
 import Notification from "./Notification/Notification";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Button from "./Button/Button";
 import Modal from "./Modal/Modal";
+
+import imagesAPI from "../services/imagesAPI";
 
 import style from "./style.css";
 
@@ -19,7 +19,7 @@ export default class App extends Component {
     arrayImages: [],
     error: null,
     loading: false,
-    isClick: false,
+    isOpenModal: false,
     BigImage: "",
   };
 
@@ -51,17 +51,17 @@ export default class App extends Component {
   };
 
   onClickModal = ({ target }) => {
-    this.setState({ isClick: true, BigImage: target.srcset });
+    this.setState({ isOpenModal: true, BigImage: target.srcset });
   };
 
   clickExitModal = ({ target }) => {
     if (target.className === "Overlay") {
-      this.setState({ isClick: false });
+      this.setState({ isOpenModal: false });
     }
   };
 
   render() {
-    const { arrayImages, loading, error, isClick, BigImage } = this.state;
+    const { arrayImages, loading, error, isOpenModal, BigImage } = this.state;
 
     return (
       <div className={style.App} onClick={this.clickExitModal}>
@@ -69,7 +69,7 @@ export default class App extends Component {
         {error && <Notification message={`Whoops ${error.message}`} />}
         <ImageGallery
           arrayImages={arrayImages}
-          onClickModal={this.onClickModal}
+          imageClick={this.onClickModal}
         />
         {loading && (
           <Loader
@@ -80,7 +80,7 @@ export default class App extends Component {
             timeout={3000} //3 secs
           />
         )}
-        {isClick && <Modal BigImage={BigImage} />}
+        {isOpenModal && <Modal BigImage={BigImage} />}
         {arrayImages.length > 0 && !loading && (
           <Button onClick={this.fetchImages} />
         )}
